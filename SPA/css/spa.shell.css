@@ -20,7 +20,8 @@
   left       : 4px;
   height     : 32px;
   width      : 128px;
-  background : orange;
+  background-image: url('logo.jpg'); 
+  background-size:128px 32px;
 }
 .spa-shell-head-acct {
   top        : 4px;
