@@ -3,7 +3,7 @@
  * Shell styles
 */
 
-.spa-shell-head, .spa-shell-head-logo, .spa-shell-head-acct,
+.spa-shell-head, .spa-shell-head-logo, .spa-shell-head-navButton, .spa-shell-head-acct,
 .spa-shell-head-search, .spa-shell-main, .spa-shell-main-nav,
 .spa-shell-main-content, .spa-shell-foot, .spa-shell-chat,
 .spa-shell-modal {
@@ -22,6 +22,13 @@
   width      : 128px;
   background-image: url('logo.jpg'); 
   background-size:128px 32px;
+}
+.spa-shell-head-navButton {
+        top        : 4px;
+        left       : 136px;
+        height     : 32px;
+        width      : 32px;
+        background : red;
 }
 .spa-shell-head-acct {
   top        : 4px;
@@ -48,9 +55,10 @@
 .spa-shell-main-nav {
   top    : 0;
   bottom : 0;
+  left   
 }
 .spa-shell-main-nav {
-  width  : 250px;
+  width  : 0px;
   background : #eee;
 }
   .spa-x-closed .spa-shell-main-nav {

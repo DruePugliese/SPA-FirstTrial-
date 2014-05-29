@@ -21,6 +21,7 @@ spa.shell = (function () {
       main_html : String()
         + '<div class="spa-shell-head">'
           + '<div class="spa-shell-head-logo"></div>'
+          + '<div class="spa-shell-head-navButton></div>"'
           + '<div class="spa-shell-head-acct"></div>'
           + '<div class="spa-shell-head-search"></div>'
         + '</div>'
@@ -31,22 +32,25 @@ spa.shell = (function () {
         + '<div class="spa-shell-foot"></div>'
         + '<div class="spa-shell-chat"></div>'
         + '<div class="spa-shell-modal"></div>',
-      chat_extend_time     : 1000,
-      chat_retract_time    : 300,
-      chat_extend_height   : 450,
-      chat_retract_height  : 15,
-      chat_extended_title  : 'Click to retract',
-      chat_retracted_title : 'Click to extend'
+      chat_extend_time        : 1000,
+      chat_retract_time       : 300,
+      chat_extend_height      : 450,
+      chat_retract_height     : 15,
+      chat_extended_title     : 'Click to retract',
+      chat_retracted_title    : 'Click to extend',
+      navBar_extend_length    : 200,
+      navBar_retracted_length : 0
     },
     stateMap  = {
-      $container        : null,
-      anchor_map        : {},
-      is_chat_retracted : true
+      $container           : null,
+      anchor_map           : {},
+      is_chat_retracted    : true,
+      is_navBar_retracted  : true
     },
     jqueryMap = {},
 
     copyAnchorMap,    setJqueryMap,   toggleChat,
-    changeAnchorPart, onHashchange,
+    changeAnchorPart, onHashchange,   toggleNavBar,
     onClickChat,      initModule;
   //----------------- END MODULE SCOPE VARIABLES ---------------
 
@@ -65,6 +69,7 @@ spa.shell = (function () {
     jqueryMap = {
       $container : $container,
       $chat      : $container.find( '.spa-shell-chat' )
+      $navBar    : $container.find('.spa-shell-main-nav')
     };
   };
   // End DOM method /setJqueryMap/
@@ -127,6 +132,52 @@ spa.shell = (function () {
     // End retract chat slider
   };
   // End DOM method /toggleChat/
+
+
+
+
+  //Begin DOM method /toggleNavBar/
+
+  toggleNavBar = function ( do_extend, callback) {
+      var
+        px_navBar_lngth = jqueryMap.$navBar.height(),
+        is_open         = px_navBar_lngth === configMap.navBar_extend_length,
+        is_closed       = px_navBar_lngth === configMap.navBar_retract_length,
+        is_sliding      = ! is_open && ! is_closed;
+
+      // avoid race condition
+      if ( is_sliding ) { return false; }
+
+      // Begin extend chat slider
+      if ( do_extend ) {
+        jqueryMap.$navBar.animate(
+          { height : configMap.navBar_extend_length },
+          configMap.navBar_extend_time,
+          function () {
+            jqueryMap.$navBar.attr(
+              'title', configMap.chat_extended_title
+            );
+            stateMap.is_chat_retracted = false;
+            if ( callback ) { callback( jqueryMap.$navBar ); }
+          }
+        );
+        return true;
+      }
+      // End extend chat slider
+
+      // Begin retract chat slider
+      jqueryMap.$chat.animate(
+        { height : configMap.navBar_retract_length },
+        configMap.navBar_retract_length,
+        function () {
+          jqueryMap.$navBar.attr(
+           'title', configMap.navBar_retract_length
+          );
+          stateMap.is_ = true;
+          if ( callback ) { callback( jqueryMap.$navBar ); }
+        }
+      );
+      return true;
 
   // Begin DOM method /changeAnchorPart/
   // Purpose  : Changes part of the URI anchor component
@@ -257,6 +308,15 @@ spa.shell = (function () {
     return false;
   };
   // End Event handler /onClickChat/
+
+  //Begin Event handler /onClickNavBar/
+  onClickChat = function ( event ) {
+    changeAnchorPart({
+      chat : ( stateMap.is_navBar_retracted ? 'open' : 'closed' )
+    });
+    return false;
+  };
+
   //-------------------- END EVENT HANDLERS --------------------
 
   //------------------- BEGIN PUBLIC METHODS -------------------
@@ -272,6 +332,11 @@ spa.shell = (function () {
     jqueryMap.$chat
       .attr( 'title', configMap.chat_retracted_title )
       .click( onClickChat );
+
+    //initialize navBar slider and bind click handler
+    stateMap.is_navBar_retracted = true;
+    jqueryMap.$navBar
+      .click( onClickNavBar);
 
     // configure uriAnchor to use our schema
     $.uriAnchor.configModule({
