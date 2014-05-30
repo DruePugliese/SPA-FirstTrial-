@@ -69,7 +69,6 @@ spa.shell = (function () {
     jqueryMap = {
       $container : $container,
       $chat      : $container.find( '.spa-shell-chat' )
-      $navBar    : $container.find('.spa-shell-main-nav')
     };
   };
   // End DOM method /setJqueryMap/
@@ -178,7 +177,7 @@ spa.shell = (function () {
         }
       );
       return true;
-
+};
   // Begin DOM method /changeAnchorPart/
   // Purpose  : Changes part of the URI anchor component
   // Arguments:
@@ -198,7 +197,7 @@ spa.shell = (function () {
   //     * Attempts to change the URI using uriAnchor.
   //     * Returns true on success, and false on failure.
   //
-  changeAnchorPart = function ( arg_map ) {
+ /* changeAnchorPart = function ( arg_map ) {
     var
       anchor_map_revise = copyAnchorMap(),
       bool_return       = true,
@@ -240,7 +239,7 @@ spa.shell = (function () {
     // End attempt to update URI...
 
     return bool_return;
-  };
+  };*/
   // End DOM method /changeAnchorPart/
   //--------------------- END DOM METHODS ----------------------
 
@@ -257,7 +256,7 @@ spa.shell = (function () {
   //   * Adjust the application only where proposed state
   //     differs from existing
   //
-  onHashchange = function ( event ) {
+/*  onHashchange = function ( event ) {
     var
       anchor_map_previous = copyAnchorMap(),
       anchor_map_proposed,
@@ -297,7 +296,7 @@ spa.shell = (function () {
     // End adjust chat component if changed
 
     return false;
-  };
+  };*/
   // End Event handler /onHashchange/
 
   // Begin Event handler /onClickChat/
