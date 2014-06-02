@@ -21,7 +21,7 @@ spa.shell = (function () {
       main_html : String()
         + '<div class="spa-shell-head">'
           + '<div class="spa-shell-head-logo"></div>'
-          + '<div class="spa-shell-head-navButton></div>"'
+          + '<div class="spa-shell-head-navButton"></div>'
           + '<div class="spa-shell-head-acct"></div>'
           + '<div class="spa-shell-head-search"></div>'
         + '</div>'
@@ -51,7 +51,7 @@ spa.shell = (function () {
 
     copyAnchorMap,    setJqueryMap,   toggleChat,
     changeAnchorPart, onHashchange,   toggleNavBar,
-    onClickChat,      initModule;
+    onClickChat,      onClickNavBar,  initModule;
   //----------------- END MODULE SCOPE VARIABLES ---------------
 
   //------------------- BEGIN UTILITY METHODS ------------------
@@ -68,7 +68,8 @@ spa.shell = (function () {
 
     jqueryMap = {
       $container : $container,
-      $chat      : $container.find( '.spa-shell-chat' )
+      $chat      : $container.find( '.spa-shell-chat' ),
+      $navBar    : $container.find( '.spa-shell-main-nav' )
     };
   };
   // End DOM method /setJqueryMap/
@@ -197,7 +198,7 @@ spa.shell = (function () {
   //     * Attempts to change the URI using uriAnchor.
   //     * Returns true on success, and false on failure.
   //
- /* changeAnchorPart = function ( arg_map ) {
+  changeAnchorPart = function ( arg_map ) {
     var
       anchor_map_revise = copyAnchorMap(),
       bool_return       = true,
@@ -239,7 +240,7 @@ spa.shell = (function () {
     // End attempt to update URI...
 
     return bool_return;
-  };*/
+  };
   // End DOM method /changeAnchorPart/
   //--------------------- END DOM METHODS ----------------------
 
@@ -256,7 +257,7 @@ spa.shell = (function () {
   //   * Adjust the application only where proposed state
   //     differs from existing
   //
-/*  onHashchange = function ( event ) {
+  onHashchange = function ( event ) {
     var
       anchor_map_previous = copyAnchorMap(),
       anchor_map_proposed,
@@ -296,7 +297,7 @@ spa.shell = (function () {
     // End adjust chat component if changed
 
     return false;
-  };*/
+  };
   // End Event handler /onHashchange/
 
   // Begin Event handler /onClickChat/
@@ -307,14 +308,6 @@ spa.shell = (function () {
     return false;
   };
   // End Event handler /onClickChat/
-
-  //Begin Event handler /onClickNavBar/
-  onClickChat = function ( event ) {
-    changeAnchorPart({
-      chat : ( stateMap.is_navBar_retracted ? 'open' : 'closed' )
-    });
-    return false;
-  };
 
   //-------------------- END EVENT HANDLERS --------------------
 
@@ -335,7 +328,7 @@ spa.shell = (function () {
     //initialize navBar slider and bind click handler
     stateMap.is_navBar_retracted = true;
     jqueryMap.$navBar
-      .click( onClickNavBar);
+      .click( onClickNavBar );
 
     // configure uriAnchor to use our schema
     $.uriAnchor.configModule({

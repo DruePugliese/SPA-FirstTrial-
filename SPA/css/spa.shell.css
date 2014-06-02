@@ -59,11 +59,16 @@
 }
 .spa-shell-main-nav {
   width  : 0px;
+  
   background : #eee;
 }
-  .spa-x-closed .spa-shell-main-nav {
-    width  : 0;
-  }
+.spa-shell-head-navButton {
+        top        : 4px;
+        left       : 136px;
+        height     : 32px;
+        width      : 32px;
+        background : red;
+}
 
 .spa-shell-main-content {
   left  : 250px;
