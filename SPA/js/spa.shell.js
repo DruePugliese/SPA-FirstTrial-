@@ -21,7 +21,7 @@ spa.shell = (function () {
       main_html : String()
         + '<div class="spa-shell-head">'
           + '<div class="spa-shell-head-logo"></div>'
-          + '<div class="spa-shell-head-navButton"></div>'
+          + '<div class="spa-shell-head-navButton" ></div>'
           + '<div class="spa-shell-head-acct"></div>'
           + '<div class="spa-shell-head-search"></div>'
         + '</div>'
@@ -38,6 +38,8 @@ spa.shell = (function () {
       chat_retract_height     : 15,
       chat_extended_title     : 'Click to retract',
       chat_retracted_title    : 'Click to extend',
+      navBar_extended_title   : 'Click to retract',
+      navBar_retracted_title  : 'Click to extend',
       navBar_extend_length    : 200,
       navBar_retracted_length : 0
     },
@@ -155,7 +157,7 @@ spa.shell = (function () {
           configMap.navBar_extend_time,
           function () {
             jqueryMap.$navBar.attr(
-              'title', configMap.chat_extended_title
+              'title', configMap.navBar_extended_title
             );
             stateMap.is_chat_retracted = false;
             if ( callback ) { callback( jqueryMap.$navBar ); }
@@ -262,7 +264,9 @@ spa.shell = (function () {
       anchor_map_previous = copyAnchorMap(),
       anchor_map_proposed,
       _s_chat_previous, _s_chat_proposed,
-      s_chat_proposed;
+      s_chat_proposed, _s_navBar_previous,
+       _s_navBar_proposed, s_navBar_proposed
+
 
     // attempt to parse anchor
     try { anchor_map_proposed = $.uriAnchor.makeAnchorMap(); }
@@ -275,6 +279,8 @@ spa.shell = (function () {
     // convenience vars
     _s_chat_previous = anchor_map_previous._s_chat;
     _s_chat_proposed = anchor_map_proposed._s_chat;
+    _s_navBar_previous = anchor_map_previous._s_navBar;
+    _s_navBar_proposed = anchor_map_proposed._s_navBar;
 
     // Begin adjust chat component if changed
     if ( ! anchor_map_previous
@@ -296,6 +302,26 @@ spa.shell = (function () {
     }
     // End adjust chat component if changed
 
+    // Begin adjust navBar component if changed
+    if ( ! anchor_map_previous
+     || _s_navBar_previous !== _s_navBar_proposed
+    ) {
+      s_navBar_proposed = anchor_map_proposed.navBar;
+      switch ( s_navBar_proposed ) {
+        case 'open'   :
+          toggleNavBar( true );
+        break;
+        case 'closed' :
+          toggleNavBar( false );
+        break;
+        default  :
+          toggleNavBar( false );
+          delete anchor_map_proposed.navBar;
+          $.uriAnchor.setAnchor( anchor_map_proposed, null, true );
+      }
+    }
+    // End adjust navBar component if changed
+
     return false;
   };
   // End Event handler /onHashchange/
@@ -308,6 +334,15 @@ spa.shell = (function () {
     return false;
   };
   // End Event handler /onClickChat/
+
+  // Begin Event handler /onClickNavBar/
+  onClickNavBar = function ( event ) {
+    changeAnchorPart({
+      navBar : ( stateMap.is_navBar_retracted ? 'open' : 'closed' )
+    });
+    return false;
+  };
+  // End Event handler /onClickNavBar/
 
   //-------------------- END EVENT HANDLERS --------------------
 
@@ -328,6 +363,7 @@ spa.shell = (function () {
     //initialize navBar slider and bind click handler
     stateMap.is_navBar_retracted = true;
     jqueryMap.$navBar
+      .attr( 'title', configMap.navBar_retracted_title )
       .click( onClickNavBar );
 
     // configure uriAnchor to use our schema
