@@ -21,7 +21,7 @@ spa.shell = (function () {
       main_html : String()
         + '<div class="spa-shell-head">'
           + '<div class="spa-shell-head-logo"></div>'
-          + '<div class="spa-shell-head-navButton"></div>'
+          + '<div class="spa-shell-head-navButton" ></div>'
           + '<div class="spa-shell-head-acct"></div>'
           + '<div class="spa-shell-head-search"></div>'
         + '</div>'
@@ -40,6 +40,8 @@ spa.shell = (function () {
       chat_retracted_title    : 'Click to extend',
       navBar_extended_title   : 'Click to retract',
       navBar_retracted_title  : 'Click to extend',
+      navBar_extend_time      : 1000,
+      navBar_retract_time     : 300,
       navBar_extend_length    : 200,
       navBar_retracted_length : 10
     },
@@ -170,7 +172,7 @@ spa.shell = (function () {
       // Begin retract chat slider
       jqueryMap.$chat.animate(
         { height : configMap.navBar_retract_length },
-        configMap.navBar_retract_length,
+        configMap.navBar_retract_time,
         function () {
           jqueryMap.$navBar.attr(
            'title', configMap.navBar_retract_length
@@ -365,6 +367,7 @@ spa.shell = (function () {
     jqueryMap.$navBar
       .attr( 'title', configMap.navBar_retracted_title )
       .click( onClickNavBar );
+    toggleNavBar(true);
 
     // configure uriAnchor to use our schema
     $.uriAnchor.configModule({
