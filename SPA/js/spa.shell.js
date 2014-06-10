@@ -161,7 +161,7 @@ spa.shell = (function () {
             jqueryMap.$navBar.attr(
               'title', configMap.navBar_extended_title
             );
-            stateMap.is_chat_retracted = false;
+            stateMap.is_navBar_retracted = false;
             if ( callback ) { callback( jqueryMap.$navBar ); }
           }
         );
@@ -177,7 +177,7 @@ spa.shell = (function () {
           jqueryMap.$navBar.attr(
            'title', configMap.navBar_retract_length
           );
-          stateMap.is_ = true;
+          stateMap.is_navBar_retracted = true;
           if ( callback ) { callback( jqueryMap.$navBar ); }
         }
       );
@@ -267,7 +267,7 @@ spa.shell = (function () {
       anchor_map_proposed,
       _s_chat_previous, _s_chat_proposed,
       s_chat_proposed, _s_navBar_previous,
-       _s_navBar_proposed, s_navBar_proposed
+      _s_navBar_proposed, s_navBar_proposed
 
 
     // attempt to parse anchor
@@ -333,6 +333,9 @@ spa.shell = (function () {
     changeAnchorPart({
       chat : ( stateMap.is_chat_retracted ? 'open' : 'closed' )
     });
+
+    toggleNavBar(true);
+
     return false;
   };
   // End Event handler /onClickChat/
@@ -342,7 +345,6 @@ spa.shell = (function () {
     changeAnchorPart({
       navBar : ( stateMap.is_navBar_retracted ? 'open' : 'closed' )
     });
-    return false;
   };
   // End Event handler /onClickNavBar/
 
@@ -367,7 +369,6 @@ spa.shell = (function () {
     jqueryMap.$navBar
       .attr( 'title', configMap.navBar_retracted_title )
       .click( onClickNavBar );
-    toggleNavBar(true);
 
     // configure uriAnchor to use our schema
     $.uriAnchor.configModule({
